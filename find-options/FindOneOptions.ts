@@ -13,7 +13,7 @@ export interface FindOneOptions<Entity = any> {
     /**
      * Simple condition that should be applied to match entities.
      */
-    where?: FindOptionsWhere<Entity>[] | FindOptionsWhere<Entity> | Brackets | NotBrackets | ((qb: SelectQueryBuilder<Entity>) => string);
+    where?: FindOptionsWhere<Entity>[] | FindOptionsWhere<Entity> | Brackets | NotBrackets | Function | ((qb: SelectQueryBuilder<Entity>) => string);
     /**
      * Indicates what relations of entity should be loaded (simplified left join form).
      */

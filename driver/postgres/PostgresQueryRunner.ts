@@ -1,10 +1,8 @@
 import { BaseQueryRunner } from "../BaseQueryRunner";
-import { Table, TableColumn } from "../../schema-builder/table/Table";
-import { Query } from "../../query-builder/Query";
 
 export class PostgresQueryRunner extends BaseQueryRunner {
-    driver: any;
-    createdEnumTypes: string[];
+    private driver: any;
+    private createdEnumTypes: string[];
 
     constructor(driver: any) {
         super();
@@ -16,9 +14,9 @@ export class PostgresQueryRunner extends BaseQueryRunner {
      * Creates a new table.
      */
     async createTable(
-        table: Table,
-        ifNotExist: boolean = false,
-        createForeignKeys: boolean = true,
+        table: any, 
+        ifNotExist: boolean = false, 
+        createForeignKeys: boolean = true, 
         createIndices: boolean = true
     ): Promise<void> {
         if (ifNotExist) {
@@ -26,13 +24,11 @@ export class PostgresQueryRunner extends BaseQueryRunner {
             if (isTableExist) return;
         }
 
-        const upQueries: Query[] = [];
-        const downQueries: Query[] = [];
+        const upQueries: string[] = [];
+        const downQueries: string[] = [];
 
         // if table have column with ENUM type, we must create this type in postgres.
-        const enumColumns = table.columns.filter(
-            (column: TableColumn) => column.type === "enum" || column.type === "simple-enum"
-        );
+        const enumColumns = table.columns.filter((column: any) => column.type === "enum" || column.type === "simple-enum");
         for (const column of enumColumns) {
             // TODO: Should also check if values of existing type matches expected ones
             const hasEnum = await this.hasEnumType(table, column);
